@@ -18,11 +18,15 @@ func main() {
 		preparationspinner()
 	*/
 	var p progress.Progress
+	p.Width = 30
+	p.Style = "block"
 
 	for i := 0; i < 350; i++ {
-		fmt.Printf(" %v\r", p.GetBar(float64(i), 300))
+		perc, _ := progress.GetPercentage(float64(i), 350)
+		fmt.Printf(" [%v] [%3.f%%]\r", p.GetBar(float64(i), 350), perc)
 		time.Sleep(50 * time.Millisecond)
 	}
+	fmt.Println()
 }
 
 func basicexample() {
