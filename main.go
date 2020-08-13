@@ -2,20 +2,27 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
+	"./progress"
 	"./spinner"
 )
 
 func main() {
-	basicexample()
-	fmt.Println(strings.Repeat("=", 20))
-	multispinner()
-	fmt.Println(strings.Repeat("=", 20))
-	repeatedspinner()
-	fmt.Println(strings.Repeat("=", 20))
-	preparationspinner()
+	/*	basicexample()
+		fmt.Println(strings.Repeat("=", 20))
+		multispinner()
+		fmt.Println(strings.Repeat("=", 20))
+		repeatedspinner()
+		fmt.Println(strings.Repeat("=", 20))
+		preparationspinner()
+	*/
+	var p progress.Progress
+
+	for i := 0; i < 350; i++ {
+		fmt.Printf(" %v\r", p.GetBar(float64(i), 300))
+		time.Sleep(50 * time.Millisecond)
+	}
 }
 
 func basicexample() {
@@ -34,7 +41,7 @@ func multispinner() {
 	var s1, s2, s3 spinner.Spinner
 	s1.SetStyle("line")
 	s2.SetStyle("windows-10")
-	s3.SetStyle("bouncing-bar")
+	s3.SetStyle("clock")
 
 	for i := 0; i < 100; i++ {
 		fmt.Printf(" %v\tloading protocols\n %v\tbooting bloated OS\n %v\tperforming checks\r\033[F\033[F", s1.Next(), s2.Next(), s3.Next())
