@@ -4,33 +4,52 @@ import (
 	"fmt"
 	"strings"
 	"time"
-	"unicode/utf8"
 
 	"./progress"
 	"./spinner"
 )
 
 func main() {
-	/*	basicexample()
-		fmt.Println(strings.Repeat("=", 20))
-		multispinner()
-		fmt.Println(strings.Repeat("=", 20))
-		repeatedspinner()
-		fmt.Println(strings.Repeat("=", 20))
-		preparationspinner()
-	*/
+	basicexample()
+	fmt.Println(strings.Repeat("=", 20))
+	multispinner()
+	fmt.Println(strings.Repeat("=", 20))
+	repeatedspinner()
+	fmt.Println(strings.Repeat("=", 20))
+	preparationspinner()
+	fmt.Println(strings.Repeat("=", 20))
 	var p progress.Progress
-	p.Width = 90
+	p.Width = 30
 	p.Style = "trapez"
 
 	for i := 0; i < 350; i++ {
 		perc, _ := progress.GetPercentage(float64(i), 350)
 		fmt.Printf(" [%v] [%3.f%%]\r", p.GetBar(float64(i), 350), perc)
-		bar := p.GetBar(float64(i), 350)
-		if utf8.RuneCountInString(bar) != p.Width {
-			panic(fmt.Sprintf("%v%% (%v/%v) leads to %v characters while %v characters are wanted\n|%v|\n|%v|\n", perc, i, 350, utf8.RuneCountInString(bar), p.Width, strings.Repeat("=", p.Width), bar))
-		}
 		time.Sleep(5 * time.Millisecond)
+	}
+	fmt.Println()
+	fmt.Println(strings.Repeat("=", 20))
+	var s spinner.Spinner
+	s.SetStyle("bouncing-bar")
+	for i := 0; i < 450; i++ {
+		if i < 100 {
+			fmt.Printf("\r%v", s.Next())
+
+		} else {
+			perc, _ := progress.GetPercentage(float64(i-100), 350)
+			fmt.Printf("\r[%3.f%%] %v", perc, p.GetBar(float64(i-100), 350))
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
+	fmt.Println()
+	fmt.Println(strings.Repeat("=", 20))
+	p.Width = 20
+	p.Style = "block"
+	s.SetStyle("braille")
+	for i := 0; i < 350; i++ {
+		perc, _ := progress.GetPercentage(float64(i-100), 350)
+		fmt.Printf("\r%v %v %3.f%%", s.Next(), p.GetBar(float64(i-100), 350), perc)
+		time.Sleep(50 * time.Millisecond)
 	}
 	fmt.Println()
 }

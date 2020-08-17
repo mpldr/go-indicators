@@ -1,6 +1,7 @@
 package progress
 
 import (
+	"math"
 	"strings"
 	"sync"
 )
@@ -45,10 +46,12 @@ func (p *Progress) GetBar(parts, total float64) (result string) {
 
 	charindex := 0
 	dingeling := percperchar / float64(maxIndex+1)
+	temp := math.Floor(percent / dingeling)
 	for percent > dingeling {
 		percent -= dingeling
 		charindex++
 	}
+	charindex = int(temp)
 
 	if charindex > 0 {
 		result += ProgressStyles[p.Style][charindex]
