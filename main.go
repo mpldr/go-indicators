@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"time"
+	"unicode/utf8"
 
 	"./progress"
 	"./spinner"
@@ -18,13 +20,17 @@ func main() {
 		preparationspinner()
 	*/
 	var p progress.Progress
-	p.Width = 30
-	p.Style = "block"
+	p.Width = 90
+	p.Style = "trapez"
 
 	for i := 0; i < 350; i++ {
 		perc, _ := progress.GetPercentage(float64(i), 350)
 		fmt.Printf(" [%v] [%3.f%%]\r", p.GetBar(float64(i), 350), perc)
-		time.Sleep(50 * time.Millisecond)
+		bar := p.GetBar(float64(i), 350)
+		if utf8.RuneCountInString(bar) != p.Width {
+			panic(fmt.Sprintf("%v%% (%v/%v) leads to %v characters while %v characters are wanted\n|%v|\n|%v|\n", perc, i, 350, utf8.RuneCountInString(bar), p.Width, strings.Repeat("=", p.Width), bar))
+		}
+		time.Sleep(5 * time.Millisecond)
 	}
 	fmt.Println()
 }

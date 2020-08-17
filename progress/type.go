@@ -1,8 +1,6 @@
 package progress
 
 import (
-	"fmt"
-	"math"
 	"strings"
 	"sync"
 )
@@ -24,30 +22,42 @@ func (p *Progress) GetBar(parts, total float64) (result string) {
 		return
 	}
 
-	a2 := p.Width
-	b2, _ := GetPercentage(parts, total)
-	c2 := float64(len(ProgressStyles[p.Style]))
-	d2 := float64(100 / a2)
-	completeSegments := math.Floor(b2 / d2)
-	e2 := completeSegments
-	f2 := b2 - d2*e2
-	g2 := d2 / c2
-	segmentIndex := int(math.Floor(f2 / g2))
+	percperchar := float64(100) / float64(p.Width)
+	percent, _ := GetPercentage(parts, total)
+	counter := 0
 
-	if b2 >= 100 {
-		result += strings.Repeat(ProgressStyles[p.Style][maxIndex], p.Width)
+	if percent > 100 {
+		percent = float64(100)
+	} else if percent < 0 {
+		percent = float64(0)
+	}
+
+	for percent > percperchar {
+		result += ProgressStyles[p.Style][maxIndex]
+
+		percent -= percperchar
+		counter++
+	}
+
+	if counter == p.Width {
 		return
 	}
 
-	fmt.Println(completeSegments)
-	result += strings.Repeat(ProgressStyles[p.Style][maxIndex], int(completeSegments))
-
-	if completeSegments < float64(p.Width) {
-		result += ProgressStyles[p.Style][segmentIndex]
+	charindex := 0
+	dingeling := percperchar / float64(maxIndex+1)
+	for percent > dingeling {
+		percent -= dingeling
+		charindex++
 	}
 
-	if completeSegments+1 < float64(p.Width) {
-		result += strings.Repeat(ProgressStyles[p.Style][0], p.Width-int(completeSegments)-1)
+	if charindex > 0 {
+		result += ProgressStyles[p.Style][charindex]
+		counter++
+	}
+
+	for counter < p.Width {
+		result += ProgressStyles[p.Style][0]
+		counter++
 	}
 	return
 }
