@@ -46,7 +46,7 @@ func main() {
 	p.Width = 20
 	p.Style = "block"
 	s.SetStyle("braille")
-	for i := 0; i < 350; i++ {
+	for i := 0; i < 450; i++ {
 		perc, _ := progress.GetPercentage(float64(i-100), 350)
 		fmt.Printf("\r%v %v %3.f%%", s.Next(), p.GetBar(float64(i-100), 350), perc)
 		time.Sleep(50 * time.Millisecond)

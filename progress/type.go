@@ -54,6 +54,9 @@ func (p *Progress) GetBar(parts, total float64) (result string) {
 	charindex = int(temp)
 
 	if charindex > 0 {
+		if charindex > maxIndex {
+			charindex = maxIndex
+		}
 		result += ProgressStyles[p.Style][charindex]
 		counter++
 	}
