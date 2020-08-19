@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"./progress"
-	"./spinner"
+	"gitlab.com/poldi1405/go-indicators/progress"
+	"gitlab.com/poldi1405/go-indicators/spinner"
 )
 
 func main() {
