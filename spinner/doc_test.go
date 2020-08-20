@@ -9,7 +9,7 @@ import (
 //   1. create a spinner
 //   2. set a style
 //   3. use .Next()
-func Example_SimpleSpinner() {
+func Example() {
 	var s Spinner
 	s.SetStyle("dots")
 
@@ -31,4 +31,20 @@ func Example_Multiuse() {
 
 	// removes the spinner-characters but leaves the text untouched
 	fmt.Printf(" %v\n %v\n %v\n", s1.Clear(), s1.Clear(), s1.Clear())
+}
+
+// This shows how to use multiple different spinners at once.
+func Example_MultipleSpinner() {
+	var s1, s2, s3 Spinner
+	// note that s1 has not been assigned a style, therefore the default style
+	// is used
+	s2.SetStyle("windows-10")
+	s3.SetStyle("clock")
+
+	for i := 0; i < 100; i++ {
+		fmt.Printf(" %v\tloading protocols\n %v\tbooting bloated OS\n %v\tperforming checks\r\033[F\033[F", s1.Next(), s2.Next(), s3.Next())
+		time.Sleep(80 * time.Millisecond)
+	}
+
+	fmt.Printf(" %v\n %v\n %v\n", s1.Clear(), s2.Clear(), s3.Clear())
 }
