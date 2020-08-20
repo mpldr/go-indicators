@@ -8,7 +8,7 @@ var ProgressStyles = map[string][]string{
 	"double":        []string{" ", "="},
 	"double-":       []string{" ", "-", "="},
 	"single":        []string{" ", "-"},
-	"trapez":        []string{"▱", "▰"},
+	"parallelogram": []string{"▱", "▰"},
 	"spaced-blocks": []string{"▯", "▮"},
 	"block":         []string{" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"},
 	"":              []string{" ", "="},

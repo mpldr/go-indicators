@@ -42,7 +42,7 @@ func (s *Spinner) Current() string {
 
 // SetStyle loads a style into the spinner
 func (s *Spinner) SetStyle(style string) {
-	if style == s.style {
+	if style == s.style && style != "" {
 		return
 	}
 	s.spinCharsMtx.Lock()

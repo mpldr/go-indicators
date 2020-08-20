@@ -1,7 +1,6 @@
 package progress
 
 import (
-	"errors"
 	"math"
 	"strings"
 	"sync"
@@ -17,28 +16,28 @@ type Progress struct {
 }
 
 // SetStyle sets the style that should be used with the progressbar
-func (p *Progress) SetStyle(style string) error {
-	if style == p.style {
-		return nil
+func (p *Progress) SetStyle(style string) {
+	if style == p.style && style != "" {
+		return
 	}
 	progressStyleMtx.RLock()
 	defer progressStyleMtx.RUnlock()
 
 	prgc, exists := ProgressStyles[style]
 	if !exists {
-		return errors.New("undefined style")
+		prgc = ProgressStyles[""]
 	}
 
 	p.prgCharsMtx.Lock()
 	p.prgChars = prgc
 	p.prgCharsMtx.Unlock()
 	p.style = style
-	return nil
 }
 
 // GetBar returns the string that represents the progressbar in the set style
 // for the given progress
 func (p *Progress) GetBar(parts, total float64) (result string) {
+	p.loadStyleIfEmpty()
 	if p.Width <= 0 {
 		p.Width = 10
 	}
@@ -93,4 +92,15 @@ func (p *Progress) GetBar(parts, total float64) (result string) {
 		counter++
 	}
 	return
+}
+
+func (p *Progress) loadStyleIfEmpty() {
+	p.prgCharsMtx.RLock()
+	if len(p.prgChars) > 0 {
+		p.prgCharsMtx.RUnlock()
+		return
+	}
+	p.prgCharsMtx.RUnlock()
+
+	p.SetStyle(p.style)
 }
