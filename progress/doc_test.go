@@ -9,12 +9,15 @@ func Example() {
 // The easiest way to get a progressbar is as follows
 func Example_styled() {
 	var p Progress
-	p.SetStyle("")
+	p.SetStyle("parallelogram")
 	p.GetBar(275, 346)
 }
 
 // The easiest way to get a progressbar is as follows
-func Example() {
+func Example_customStyle() {
 	var p Progress
+
+	DefineStyle("my-style", []string{"○", "◔", "◑", "◕", "●"})
+	p.SetStyle("my-style")
 	p.GetBar(275, 346)
 }
