@@ -20,7 +20,7 @@ func Example() {
 }
 
 // This shows the same spinner 3 times and cleans up afterwards
-func Example_Multiuse() {
+func Example_multiuse() {
 	var s1 Spinner
 	s1.SetStyle("bouncing-bar")
 
@@ -34,7 +34,7 @@ func Example_Multiuse() {
 }
 
 // This shows how to use multiple different spinners at once.
-func Example_MultipleSpinner() {
+func Example_multipleSpinner() {
 	var s1, s2, s3 Spinner
 	// note that s1 has not been assigned a style, therefore the default style
 	// is used

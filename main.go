@@ -68,7 +68,7 @@ func basicexample() {
 
 func multispinner() {
 	var s1, s2, s3 spinner.Spinner
-	s1.SetStyle("line")
+	//s1.SetStyle("line")
 	s2.SetStyle("windows-10")
 	s3.SetStyle("clock")
 
