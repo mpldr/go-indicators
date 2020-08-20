@@ -1,25 +1,52 @@
 package progress
 
 import (
+	"errors"
 	"math"
 	"strings"
 	"sync"
 )
 
+// Progress contains the settings of a Progressbar.
 type Progress struct {
-	Style string
+	style string
 	Width int
 
-	mtx sync.Mutex
+	prgChars    []string
+	prgCharsMtx sync.RWMutex
 }
 
+// SetStyle sets the style that should be used with the progressbar
+func (p *Progress) SetStyle(style string) error {
+	if style == p.style {
+		return nil
+	}
+	progressStyleMtx.RLock()
+	defer progressStyleMtx.RUnlock()
+
+	prgc, exists := ProgressStyles[style]
+	if !exists {
+		return errors.New("undefined style")
+	}
+
+	p.prgCharsMtx.Lock()
+	p.prgChars = prgc
+	p.prgCharsMtx.Unlock()
+	p.style = style
+	return nil
+}
+
+// GetBar returns the string that represents the progressbar in the set style
+// for the given progress
 func (p *Progress) GetBar(parts, total float64) (result string) {
 	if p.Width <= 0 {
 		p.Width = 10
 	}
-	maxIndex := len(ProgressStyles[p.Style]) - 1
+	p.prgCharsMtx.RLock()
+	defer p.prgCharsMtx.RUnlock()
+	maxIndex := len(p.prgChars) - 1
 	if total == 0 {
-		result += strings.Repeat(ProgressStyles[p.Style][maxIndex], p.Width)
+		result += strings.Repeat(p.prgChars[maxIndex], p.Width)
 		return
 	}
 
@@ -34,7 +61,7 @@ func (p *Progress) GetBar(parts, total float64) (result string) {
 	}
 
 	for percent > percperchar {
-		result += ProgressStyles[p.Style][maxIndex]
+		result += p.prgChars[maxIndex]
 
 		percent -= percperchar
 		counter++
@@ -57,12 +84,12 @@ func (p *Progress) GetBar(parts, total float64) (result string) {
 		if charindex > maxIndex {
 			charindex = maxIndex
 		}
-		result += ProgressStyles[p.Style][charindex]
+		result += p.prgChars[charindex]
 		counter++
 	}
 
 	for counter < p.Width {
-		result += ProgressStyles[p.Style][0]
+		result += p.prgChars[0]
 		counter++
 	}
 	return

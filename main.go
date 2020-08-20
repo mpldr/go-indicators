@@ -20,7 +20,7 @@ func main() {
 	fmt.Println(strings.Repeat("=", 20))
 	var p progress.Progress
 	p.Width = 30
-	p.Style = "trapez"
+	p.SetStyle("trapez")
 
 	for i := 0; i < 350; i++ {
 		perc, _ := progress.GetPercentage(float64(i), 350)
@@ -44,7 +44,7 @@ func main() {
 	fmt.Println()
 	fmt.Println(strings.Repeat("=", 20))
 	p.Width = 20
-	p.Style = "block"
+	p.SetStyle("block")
 	s.SetStyle("braille")
 	for i := 0; i < 450; i++ {
 		perc, _ := progress.GetPercentage(float64(i-100), 350)
