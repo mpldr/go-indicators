@@ -12,3 +12,5 @@ You can run an example of what it can look like by executing
 go get gitlab.com/poldi1405/go-indicators
 go run gitlab.com/poldi1405/go-indicators
 ```
+
+[![asciicast](https://asciinema.org/a/xx4sgRKJLhLKRJ7kPLBD9NQCe.svg)](https://asciinema.org/a/xx4sgRKJLhLKRJ7kPLBD9NQCe)

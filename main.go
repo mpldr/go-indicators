@@ -19,8 +19,10 @@ func main() {
 	preparationspinner()
 	fmt.Println(strings.Repeat("=", 20))
 	var p progress.Progress
+	fmt.Println(p.GetBar(275, 346))
+	fmt.Println(strings.Repeat("=", 20))
 	p.Width = 30
-	p.SetStyle("trapez")
+	p.SetStyle("parallelogram")
 
 	for i := 0; i < 350; i++ {
 		perc, _ := progress.GetPercentage(float64(i), 350)
@@ -31,6 +33,7 @@ func main() {
 	fmt.Println(strings.Repeat("=", 20))
 	var s spinner.Spinner
 	s.SetStyle("bouncing-bar")
+	p.SetStyle("spaced-blocks")
 	for i := 0; i < 450; i++ {
 		if i < 100 {
 			fmt.Printf("\r%v", s.Next())
@@ -51,7 +54,7 @@ func main() {
 		fmt.Printf("\r%v %v %3.f%%", s.Next(), p.GetBar(float64(i-100), 350), perc)
 		time.Sleep(50 * time.Millisecond)
 	}
-	fmt.Println()
+	fmt.Println("\r", s.Clear())
 }
 
 func basicexample() {
